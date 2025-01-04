@@ -1,0 +1,24 @@
+.App {
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 80%; /* 테이블 크기 조정 */
+  margin: 0 auto; /* 테이블 중앙 정렬 */
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+}
+
+.navbar .nav {
+  display: flex;
+  justify-content: center; /* Navbar 내부 Nav 항목들을 가운데 정렬 */
+  width: 100%;
+}
+
+.navbar .nav-link {
+  margin: 0 10px; /* 링크들 간 간격 조정 */
+}

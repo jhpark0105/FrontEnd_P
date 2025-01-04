@@ -1,0 +1,20 @@
+.form{
+  display: flex;
+}
+
+.form input{
+  flex: 1;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid green;
+}
+
+.create-button{
+  padding: 5px;
+  background-color: gold;
+  cursor: pointer;
+}
+
+.create-button:hover{
+  background-color: pink;
+}

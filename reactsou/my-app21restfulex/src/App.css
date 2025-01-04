@@ -1,0 +1,9 @@
+.App {
+  text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+  width: 80%; /* 테이블 크기 조정 */
+  margin: 0 auto; /* 테이블 중앙 정렬 */
+}
