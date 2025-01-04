@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+directive : DOM 엘리먼트가 뭔가를 수행하도록 지시하는 특수한 토큰이다. 접두어가 v- 
+<br/>
+<h2>directive 속성 연습</h2>
+<div id="app">
+  <a href="{{link}}">가자 다음으로~!(html 속성에는 {{}} 사용 X)</a> 
+  <br/>
+  <a v-bind:href="link">가자 다음으로ㅎㅎ - 단방향으로 데이터에 접근</a>
+  <br/>
+  <a :href="link">가자 다음으로ㅎㅎ - 단방향으로 데이터에 접근(v-bind 생략가능)</a>
+  <br/>
+  <!--<img v-bind:src="imageSrc" alt="여긴 이미지">-->
+  <br/>
+  <h2 v-text="say"></h2>
+  <h2>{{say}}</h2> <!--보간법 사용 가능한-->
+  <h2 v-once>data 속성 값 : {{say}}</h2> <!--첫 바인딩 후 1회만 렌더링, 업데이트 안됨-->
+  <h2 v-once>data 속성 값 : {{sayFunc()}}</h2>
+
+  <!--텍스트 형태로 출력 또는 파싱-->
+  <span v-text="aLinkToNaver"></span><br/>
+  <span v-html="aLinkToNaver"></span>
+
+  <hr/>
+
+  <!--양방향 데이터 바인딩-->
+  이름은 <input type="text" v-model="name">{{name}}
+  이름은 <input type="text" v-bind:value="name" @input="changeName">{{name}}
+
+  <hr/>
+
+  <!--계산 관련-->
+  a = {{a}}, b={{b}}
+  <br/>
+  a 값 입력 : <input type="text" v-model="a"><br/>
+  입력된 a:{{a}} (타입은 {{typeof a}})<br/>
+  a 값 입력 : <input type="text" v-model.number="a"><br/>
+
+  <hr/>
+  if test : <br/>
+  <h2 v-if="nai >= 20">성인</h2>
+  <h2 v-else-if="nai === 15">나이가 15이구만</h2>
+  <h2 v-else>나이가 어리네</h2>
+
+  <hr/>
+
+  for test : <br/>
+  <ul>
+    <li v-for="todo in todos">{{todo.msg}}</li>
+  </ul>
+  <ul>
+    <li v-for="(todo, index) in todos" :key='index'>{{index+1}}){{todo.msg}}</li>
+  </ul>
+
+</div>
+
+<script>
+  const {createApp} = Vue;
+
+  createApp({
+    data(){
+      return{
+        link:"https://daum.net",
+        imageSrc:"shashaping.png",
+        say:"이해가 잘 되고 있니?",
+        aLinkToNaver:"<a href='https://naver.com'>네이버 페이지</a>",
+        name:"신기해",
+
+        a:"1",
+        nai:15,
+        todos:[
+          {msg:'아침을 먹고'},
+          {msg:'점심을 먹고'},
+          {msg:'집에 가기'}
+        ],
+      };
+    },
+    methods:{
+      sayFunc(){
+        this.say = "vue의 지시어에 대한 이해를 묻는거임"
+        return this.say;
+      },
+      changeName(e){
+        this.name=e.target.value;
+      }
+    },
+    computed:{ 
+      //계산된 프로퍼티로 사용할 수 있는 함수처럼 작동함
+      //함수와의 차이는 계산된 프로퍼티가 의존하는 요소가 변경되면 값이 다시 평가됨
+      b(){
+        return this.a + 1;
+      }
+    }
+  }).mount("#app");
+</script>
+</body>
+</html>

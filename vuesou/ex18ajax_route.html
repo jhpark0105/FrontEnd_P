@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://unpkg.com/vue-router@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>자료 보기</h1>
+    <nav>
+      <router-link to="/">전체 자료</router-link> | 
+      <router-link to="/busers">부서 자료</router-link> | 
+      <router-link to="/jikwons">직원 자료</router-link> | 
+      <router-link to="/gogeks">고객 자료</router-link>
+    </nav>
+    <router-view></router-view>
+  </div>
+
+  <script>
+    //전체 자료 컴포넌트
+    const AllData = {
+      template:`
+        <div>
+          <h2>전체 자료</h2>
+          <table v-if="allData.length" border="1">
+            <thead>
+              <tr>
+              <th>부서번호</th><th>부서명</th><th>직원명</th><th>관리고객</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="data in allData" :key="data.buserno">
+                  <td>{{ data.buserno }}</td>
+                  <td>{{ data.busername }}</td>
+                  <td>{{ data.jikwonname }}</td>
+                  <td>{{ data.gogekname }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p v-else>데이터가 없네요</p>
+        </div>
+      `,
+      data(){
+        return {
+          allData:[],
+        };
+      },
+      mounted(){
+        axios.get("http://localhost/joindata")
+        .then(response => {
+          this.allData = response.data;
+        })
+        .catch(error => {
+          console.log("err : " + error);
+        });
+      },
+    };
+
+    //부서 자료 컴포넌트
+    const BuserData = {
+      template:`
+        <div>
+          <h2>부서 자료</h2>
+          <table v-if="buserData.length" border="1">
+            <thead>
+              <tr>
+              <th>부서번호</th><th>부서명</th><th>위치</th><th>전화번호</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="data in buserData" :key="data.buserno">
+                  <td>{{ data.buserno }}</td>
+                  <td>{{ data.busername }}</td>
+                  <td>{{ data.buserloc }}</td>
+                  <td>{{ data.busertel }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p v-else>데이터가 없네요</p>
+        </div>
+      `,
+      data(){
+        return {
+          buserData:[],
+        };
+      },
+      mounted(){
+        axios.get("http://localhost/busers")
+        .then(response => {
+          this.buserData = response.data;
+        })
+        .catch(error => {
+          console.log("err : " + error);
+        });
+      },
+    };
+    //직원 자료 컴포넌트
+    const JikwonData = {
+      template:`
+        <div>
+          <h2>직원 자료</h2>
+          <table v-if="jikwonData.length" border="1">
+            <thead>
+              <tr>
+              <th>직원번호</th><th>이름</th><th>직급</th><th>연봉</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="data in jikwonData" :key="data.buserno">
+                  <td>{{ data.jikwonno }}</td>
+                  <td>{{ data.jikwonname }}</td>
+                  <td>{{ data.jikwonjik }}</td>
+                  <td>{{ data.jikwonpay }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p v-else>데이터가 없네요</p>
+        </div>
+      `,
+      data(){
+        return {
+          jikwonData:[],
+        };
+      },
+      mounted(){
+        axios.get("http://localhost/jikwons")
+        .then(response => {
+          this.jikwonData = response.data;
+        })
+        .catch(error => {
+          console.log("err : " + error);
+        });
+      },
+    };
+    //고객 자료 컴포넌트
+    const GogekData = {
+      template:`
+        <div>
+          <h2>고객 자료</h2>
+          <table v-if="gogekData.length" border="1">
+            <thead>
+              <tr>
+              <th>고객번호</th><th>이름</th><th>전화번호</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="data in gogekData" :key="data.buserno">
+                  <td>{{ data.gogekno }}</td>
+                  <td>{{ data.gogekname }}</td>
+                  <td>{{ data.gogektel }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <p v-else>데이터가 없네요</p>
+        </div>
+      `,
+      data(){
+        return {
+          gogekData:[],
+        };
+      },
+      mounted(){
+        axios.get("http://localhost/gogeks")
+        .then(response => {
+          this.gogekData = response.data;
+        })
+        .catch(error => {
+          console.log("err : " + error);
+        });
+      },
+    };
+
+    //Vue Router 설정
+    const routes = [
+      {path:"/", component:AllData},
+      {path:"/busers", component:BuserData},
+      {path:"/jikwons", component:JikwonData},
+      {path:"/gogeks", component:GogekData},
+    ]
+
+    const router = VueRouter.createRouter({
+      history:VueRouter.createWebHistory(),
+      routes,
+    });
+
+    //Vue 앱 생성
+    const app = Vue.createApp({});
+
+    app.use(router);
+    app.mount("#app");
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>조건부 렌더링</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+  <div id="app">
+    <p v-if="season">겨울이 좋아</p>
+    <p v-else>여름이 기다려져</p>
+    <button @click="season =! season">결과 바꾸기</button>
+
+    <!--template를 활용한 조건부 그룹-->
+    <template v-if="season">
+      <p>해충이 없어 좋아</p>
+      <p>눈 구경하기 좋아</p>
+    </template>
+    <template v-else>
+      <p>가볍게 패션을 표현</p>
+      <p>장마철 개고생하기</p>
+    </template>
+
+    <div v-show="season"> <!--v-show는 template와 함께할 수 없다-->
+      <strong>롱코트로 멋부리기</strong>
+    </div>
+
+    * v-if와 v-show의 차이 * <br/>
+    <p v-if="season">v-if로 표현 - false인 경우 코드가 제거</p>
+    <p v-show="season">v-show로 표현 - false인 경우 display:none으로 처리</p>
+
+    <!--체크 박스의 상태에 따라 조건부 렌더링-->
+    <label><input type="checkbox" v-model="myVisible">체크박스 표시 확인</label>
+    <p v-if="myVisible">check on</p>
+    <p v-else>check off</p>
+
+    <hr/>
+    <!--count에 따라 조건부 렌더링-->
+    <p v-if="count === 5">{{count}}번 클릭!! 버튼을 비활성화</p>
+    <p v-else-if="count >= 1">현재 클릭 횟수 : {{count}}</p>
+    <p v-else>버튼을 클릭하시오</p>
+    <button v-bind:disabled="count === 5" v-on:click="addFunc">숫자 늘리기</button>&nbsp;
+    <button :disabled="count === 5" @click="addFunc">숫자 늘리기</button>&nbsp;
+  </div>
+
+  <script>
+    const {createApp} = Vue;
+
+    createApp({
+      data(){
+        return{
+          season:true,
+          myVisible:false,
+          count:0,
+        };
+      },
+      methods:{
+        addFunc(){
+          this.count++;
+        }
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script defer>
+    document.addEventListener("DOMContentLoaded",function(){
+      const {createApp, ref} = Vue; //ref:반응형 데이터 생성을 위한 메소드
+
+      createApp({
+        setup() { //컴포넌트의 초기 상태와 로직을 설정
+          const bookList = ref([ // ref()하면 반응형 데이터로 동작. 데이터 변경시 리렌더링
+            {name:"자바의 이해", price:25000},
+            {name:"파이썬 프로그래밍", price:23000},
+            {name:"마리아DB", price:35000},
+            {name:"리액트 완전 정복", price:37000},
+            {name:"Vue 만세", price:21000},
+          ]);
+          const selectedBooks = ref([]);
+          return {bookList,selectedBooks}; 
+          //setup 함수는 두개의 변수를 return하고 있다.
+        },
+      }).mount("#app");
+    });
+
+  </script>
+</head>
+<body>
+  <div id="app">
+    <div>
+      <h2>도서 정보</h2>
+      <div v-for="(book,index) in bookList" :key="index">
+        <input type="checkbox" :id="'book' + index" v-bind:value="book" v-model="selectedBooks">
+        <label for="'book' + index">{{book.name}}  {{book.price}}원</label>
+      </div>
+
+      <div>
+        <h3>선택된 도서 : </h3>
+        <ul>
+          <li v-for="(book,index) in selectedBooks" :key="index">
+            {{index + 1}} : {{book.name}}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

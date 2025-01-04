@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <button v-on:click="showFunc">직원 자료 보기</button>
+
+    <table v-if="datas && datas.length > 0">
+      <tr>
+        <th>사번</th><th>이름</th><th>직급</th><th>연봉</th>
+      </tr>
+      <template v-for="data in datas">  
+        <tr>
+          <td>{{data.jikwonno}}</td>
+          <td>{{data.jikwonname}}</td>
+          <td>{{data.jikwonjik}}</td>
+          <td>{{data.jikwonpay}}</td>
+        </tr>
+      </template>
+    </table>
+  </div>
+
+  <script>
+    const {createApp} = Vue;
+
+    createApp({
+      data(){
+        return{
+          datas:[]
+        }
+      },
+      methods:{
+        showFunc(){
+          axios.get("http://localhost:8080/abcreact/test.jsp")
+          .then(response => {
+            console.log(response.data);
+            this.datas = response.data;
+          })
+          .catch(error => {
+            console.log("에러 : ", error);
+          })
+        }
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>

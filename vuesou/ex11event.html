@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+  <div id="app">
+    <h1>친구 목록</h1>
+    <div>
+      <input type="text" v-model="newName" @keyup.enter="addName" placeholder="이름 입력"/>
+    </div>
+    <div>
+      <ul>
+        <li v-for="(name, index) in names" :key="index">
+          {{name}}
+          <button @click="removeName(index)">삭제</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const {createApp,ref} = Vue;
+
+    createApp({
+      setup(){
+        const newName = ref(""); //새로 입력할 이름
+        const names = ref(["강나루","강감찬"]);
+
+        const addName = () => {
+          if(newName.value.trim !== ""){
+            names.value.push(newName.value.trim());
+            newName.value = ""; //입력 필드 초기화
+          }
+        };
+
+        const removeName = (index) => {
+          names.value.splice(index,1);//특정 인덱스 이름 , 1개를 삭제하겠다
+        };
+
+        return {newName, names, addName, removeName};
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>

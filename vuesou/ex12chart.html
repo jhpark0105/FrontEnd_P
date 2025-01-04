@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!--<script src="https://unpkg.com/vue@3"></script>-->
+  <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31/dist/vue.global.prod.js"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <script>
+    let datas = [
+      ["햄버거", 5],
+      ["도너츠", 2],
+      ["김밥", 7],
+      ["붕어빵", 10],
+      ["치킨", 1]
+    ];
+
+    google.charts.load("current",{packages:["corechart"]}); //코어차트 라이브러리 로딩
+    google.charts.setOnLoadCallback(drawFunc); //콜백 함수 지정
+
+    function drawFunc(){
+      let data = google.visualization.arrayToDataTable([
+        ["종류","개수"], ...datas
+      ]);
+
+      let options = {title:'먹고 싶은 것', is3D:true};
+      let chart = new google.visualization.PieChart(document.querySelector("#chart_div")); //PieChart: 데이터 양이 적을때 
+      chart.draw(data, options); //차트 그림
+    }
+  </script>
+</head>
+<body>
+  <h2>구글 차트 그리기📊</h2>
+  먹고 싶은 군것질 목록<br/>
+  <div id="chart_div" style="height: 500px;"></div>
+
+  <div id="app">
+    <ul>
+      <li v-for="(value, idx) in dataArray" :key="idx">
+        {{value[0]}} : {{value[1]}} &nbsp;
+        <button @click="addFunc(idx)">1 증가</button>&nbsp;
+        <button @click="subFunc(idx)">1 감소</button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    const {createApp} = Vue;
+
+    createApp({
+      data(){
+        return{
+          dataArray:datas
+        }
+      },
+      methods:{
+        addFunc(idx){
+          this.dataArray[idx][1]++;
+          this.updateChart();
+        },
+        subFunc(idx){
+          if(this.dataArray[idx][1] > 0){
+            this.dataArray[idx][1]--;
+            this.updateChart();
+          }
+        },
+        updateChart(){
+          drawFunc();
+        }
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+  <h1>이벤트 연습</h1>
+  <div id="app">
+    주사위 수 : {{number}} 
+    <button v-on:click="rollDiceEvent">주사위 던지기</button>
+    <br/>
+    주사위 수 + 10: {{number2}} 
+    <button @:click="rollDiceEvent2(10)">주사위 던지기</button>
+    <br/><br/>
+    숫자 증가 : {{count}}
+    <br/>
+    숫자 * 2 증가 : {{count * 2}}
+    <br/>
+    숫자 js 조건문 : {{count % 2 === 0?"짝수":"홀수"}} <!--삼항 연산-->
+    <br/>
+    <button @click="count += 1">클릭으로 count 증가</button>
+    <button @click="count++">클릭으로 count 증가</button>
+  </div>
+  
+  <script>
+    const app = Vue.createApp({
+      data(){
+        return{
+          number: 1,
+          number2 : 0,
+          count : 0,  
+        };
+      },
+      methods:{
+        rollDiceEvent(){
+          let num = Math.floor(Math.random()*6 + 1);
+          this.number = num;
+        },
+        rollDiceEvent2(para){
+          let num = Math.floor(Math.random()*6 + 1 + para);
+          this.number2 = num;
+        }
+      }
+    }).mount("#app");
+  </script>
+
+  <hr/>
+  <div id="app2">
+    message : 
+    <child-component :propsdata="message"></child-component :propsdata>
+    <!-- propsdata 표기법 : propsData X, props_data O -->
+  </div>
+
+  <script>
+    const app2 = Vue.createApp({
+      data(){
+        return {
+          message:"부모 컴포넌트에서 자식 컴포넌트로 전달할 메세지"
+        };
+      },
+    });
+
+    app2.component("child-component",{
+      props:["propsdata"], //부모로부터 propsdata라는 property를 받음
+      template:"<span>{{propsdata}}</span>"
+    });
+
+    app2.mount("#app2");
+
+  </script>
+
+  <hr/>
+  <div id="app3">
+    <!--자식 컴포넌트에서 이벤트를 발생 시키고, 부모 컴포넌트에서 감지하여 메소드 호출-->
+    <child-component @show-log="printText"></child-component>
+    <h2>{{msg}}</h2>
+  </div>
+
+  <script>
+    const app3 = Vue.createApp({
+      data(){
+        return{
+          msg:"",
+        };
+      },
+      methods:{
+        printText(){
+          const logMessage="이벤트 수신 성공";
+          console.log(logMessage);
+          this.msg=logMessage;
+        }
+      }
+    });
+    app3.component("child-component",{ //하위 컴포넌트
+      template:"<button @click='showlog'>하위 컴포넌트버튼 클릭</button>",//하위 컴포넌트버튼 클릭
+      methods:{
+        showlog(){
+          this.$emit('show-log'); //보내는 컴포넌트에서는 .$emit을 사용
+        }
+      }
+    });
+
+    app3.mount("#app3");
+  </script>
+</body>
+</html>

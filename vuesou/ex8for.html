@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>반복 렌더링</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+  <div id="app">
+    <h3>갈증날 때 음료</h3>
+    <ul>
+      <li v-for="a in list" :key="a">{{a}}</li>
+    </ul>
+    <br/>
+    <ul>
+      <li v-for="(a,idx) in list" :key="`a-${idx}`">{{a}}({{idx}})</li>
+    </ul>
+    <br/>
+    <h3>가고 싶은 여행지</h3>
+    <ol>
+      <li v-for="city in objArray" :key="city.name">{{city.name}}까지 소요시간 : {{city.taketime}}</li>
+    </ol>
+    <br/>
+    <h3>구구단 3단 출력</h3>
+    <ul>
+      <li v-for="su in 9" :key="su">3 * {{su}} = {{3* su}}</li>
+    </ul>
+    <br/>
+    <h3>배열 자료 추가, 삭제</h3>
+    <ul>
+      <li v-for="i in myArr" :key="i">{{i}}</li>
+    </ul>
+    <button @click="addList">자료 추가(맨뒤)</button>&nbsp;
+    <button @click="addListIndex(3)">자료 삽입(특정)</button>&nbsp;
+    <button @click="changeList(2)">자료 변경</button>&nbsp;
+    <button @click="deleteList(1)">자료 삭제</button>&nbsp;
+
+    <br/><br/><br/>
+    홀수만 출력
+    <!--Vue에서는 성능상의 이유로 v-for와 v-if를 함께 사용 권장 안함
+    <span v-for="i in numArr" v-if="i % 2 === 1" :key="i">{{i}}&nbsp;&nbsp;</span>
+    -->
+    <template v-for="i in numArr" :key="i">
+      <span v-if="i % 2 === 1">{{i}}&nbsp;&nbsp;</span>
+    </template>
+  </div>
+
+  <script src="ex8js.js">
+
+  </script>
+</body>
+</html>

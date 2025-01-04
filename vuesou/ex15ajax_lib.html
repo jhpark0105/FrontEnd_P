@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script><!--axios cdn-->
+</head>
+<body>
+  <div id="app">
+    <button @click="fetchData">도서관 정보 읽기</button>
+    <button @click="clearData">도서관 정보 지우기</button>
+
+    <div v-for="lib in libraries" :key="lib.LBRRY_NAME">
+      <h3>{{lib.LBRRY_NAME}}</h3>
+      주소 : {{lib.ADRES}} <br/>
+      전화번호 : {{lib.TEL_NO}}<hr/>
+    </div>
+  </div>
+
+  <script>
+    const {createApp} = Vue;
+
+    createApp({
+      data(){
+        return{
+          libraries:[]
+        }
+      },
+      methods:{
+        fetchData(){
+          axios.get("http://openapi.seoul.go.kr:8088/sample/json/SeoulLibraryTimeInfo/1/5/")
+          .then(response => {
+            this.libraries = response.data.SeoulLibraryTimeInfo.row;
+          })
+          .catch(error => {
+            console.error('fetch err : ', error);
+          });
+        },
+        clearData(){
+          this.libraries = [];
+        }
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>

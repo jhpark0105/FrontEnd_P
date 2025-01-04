@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <form @submit.prevent="findFunc">
+      직급 입력 : 
+      <input type="text" v-model="jikwonjik">
+      <button type="submit">결과 보기</button>
+    </form>
+
+    <table v-if="datas.length > 0" border="1">
+      <thead>
+        <tr>
+          <th>사번</th><th>이름</th><th>직급</th><th>연봉</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="data in datas" :key="data.jikwonno">
+          <td>{{data.jikwonno}}</td>
+          <td>{{data.jikwonname}}</td>
+          <td>{{data.jikwonjik}}</td>
+          <td>{{data.jikwonpay}}</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="1">인원수 : {{datas.length}}명</td>
+          <td colspan="3">연봉 평균 : {{averagePay}} 만원</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <p v-else>해당 직급의 직원이 없습니다.</p>
+  </div>
+  
+  <script>
+    const { createApp } = Vue;
+
+    createApp({
+      data() {
+        return {
+          jikwonjik: '',
+          datas: []
+        };
+      },
+      methods: {
+        findFunc() {
+            axios.get("http://localhost:8080/abcreact/test.jsp", {
+                params: { name: this.jikwonjik }
+            })
+            .then(response => {
+                this.datas = response.data;
+            })
+            .catch(error => {
+                console.log("에러 : ", error);
+            });
+        }
+      },
+      computed: {
+        averagePay() {
+          if (this.datas.length > 0) {
+            const totalPay = this.datas.reduce((sum, data) => sum + parseFloat(data.jikwonpay), 0);
+            return (totalPay / this.datas.length).toFixed(2);
+          }
+          return 0;
+        }
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>

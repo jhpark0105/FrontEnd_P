@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script><!--axios cdn-->
+</head>
+<body>
+  <div id="app">
+    <button @click="fetchData">역삼동 날씨 정보 얻기</button>
+
+    <div v-if="weather">
+      <h3>날씨 정보 🌁</h3>
+      예보 시간 : {{weather.time}} <br/>
+      온도 : {{weather.temperature}}<br/>
+      풍속 : {{weather.windspeed}}<br/>
+      풍향 : {{weather.winddirection}}<br/>
+      <hr/>
+    </div>
+  </div>
+
+  <script>
+    const {createApp} = Vue;
+
+    createApp({
+      data(){
+        return{
+          weather:null
+        }
+      },
+      methods:{
+        fetchData(){
+          axios.get("https://api.open-meteo.com/v1/forecast?latitude=37.5001&longitude=127.0385&current_weather=true")
+          .then(response => {
+            this.weather = response.data.current_weather;
+          })
+          .catch(error => {
+            console.error('fetch err : ', error);
+          });
+        }
+      }
+    }).mount("#app");
+  </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+  <div id="app">
+    <h2>1강의실 성적 관리</h2>
+    <form @submit.prevent="addScore"><!-- v-on:submit -->
+      <div>
+        <label for="name">이 름 : </label>
+        <input type="text" id="name" v-model="inputData.name" required />
+      </div>
+      시험 과목 : 
+      <div>
+        <label for="subject1">자 바 : </label>
+        <input type="number" min="0" id="subject1" v-model="inputData.subject1" required />
+      </div>
+      <div>
+        <label for="subject2">디 비 : </label>
+        <input type="number" min="0" id="subject2" v-model="inputData.subject2" required />
+      </div>
+      <div>
+        <label for="subject3">뷰 우 : </label>
+        <input type="number" min="0" id="subject3" v-model="inputData.subject3" required />
+      </div>
+      <br/>
+      <button type="submit">확인</button>
+    </form>
+    <h2>입력 결과</h2>
+    <ul>
+      <ul>
+        <li v-for="entry in entries" :key="entry.name">
+          {{entry.name}}의 점수 : {{entry.subject1}}, {{entry.subject2}}, {{entry.subject3}}
+          총점 : {{entry.total}}
+        </li>
+      </ul>
+    </ul>
+    <h2>전체 계산 결과</h2>
+    <p>인원 수 : {{entries.length}}, 전체 총점 : {{totalSum}}</p>
+  </div>
+
+  <script src="ex10.js"></script>
+</body>
+</html>

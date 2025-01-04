@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+  <h2>이벤트 연습(사칙연산)</h2>
+  <div id="app">
+    <div>
+      <label for="value1">값1:</label>
+      <input type="number" id="value1" v-model.number="value1">
+    </div>
+    <div>
+        <label for="value2">값2:</label>
+        <input type="number" id="value2" v-model.number="value2">
+    </div>
+     <div>
+      <button @click="calculate('+')">+</button>
+      <button @click="calculate('-')">-</button>
+      <button @click="calculate('*')">*</button>
+      <button @click="calculate('/')">/</button>
+    </div>
+    <div>
+      <h3>결과 값 : {{result}}</h3>
+    </div>
+  </div>
+
+  <script>
+    const {createApp, ref} = Vue; //ref: 반응형 데이터 처리용
+
+    createApp({
+      setup(){
+        //데이터는 vue의 반응성에 의해 UI와 동기화되며 값이 변경되면 화면이 리렌더링
+        const value1 = ref(0); //기본 데이터 타입을 감싸서 상태 변화를 추적할 수 있도록 함
+        const value2 = ref(0);
+        const result = ref(0);
+
+        const calculate = (oper) => {
+          switch(oper){
+            case "+":
+              result.value = value1.value + value2.value;
+              break;
+            case "-":
+              result.value = value1.value - value2.value;
+              break;
+            case "*":
+              result.value = value1.value * value2.value;
+              break;
+            case "/":
+              if(value2.value === 0){
+                alert("0으로 나눌 수 없습니다.")
+                result.value = "NaN";
+              } else {
+                result.value = value1.value / value2.value;
+              }
+              break;
+          }
+        };
+        return {value1,value2,result,calculate};
+      }
+    }).mount("#app");
+    //vue의 컴포넌트 간 통신 방식
+    // - vue에서는 props와 $emit이 기본적인 통신 자원으로 활용된다.
+    // - props는 단방향 데이터 흐름(부모->자식)을 구현한다.
+    // - $emit은 이벤트 기반 흐름 (자식->부모)을 구현한다.
+
+  </script>
+</body>
+</html>

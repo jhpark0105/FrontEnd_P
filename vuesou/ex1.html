@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!--jQuery cdn 사용-->
+  <script src="https://code.jquery.com/jquery-latest.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("#msg").text("vue도 jQuery처럼 cdn으로 작업 가능")
+    });
+  </script>
+
+  <!--vue cdn 사용-->
+  <script src="https://unpkg.com/vue@3"></script>
+  <script defer>
+    //script태그의 defer 속성은 페이지가 모두 로드된 후에 해당 외부 스크립트가 실행됨을 명시
+    document.addEventListener("DOMContentLoaded",function(){
+      const hi = {msg:"뷰 세계에 오신 걸 환영 합니다."}; //mvvm 중 Model 영역 : data만 가짐
+
+      Vue.createApp({ //ViewModel
+        //proxy 객체로서 반응성을 제공하는 기본 요소! model 객체 값을 변경하면 즉시 view(화면)을 갱신함
+        //그래서 객체를 반환하는 함수를 작성 // 상태와 연산 담당
+        data(){ 
+          return hi;
+        }
+      }).mount("#app1") //mount 메소드로 현재 앱(객체)을 id가 app1인 DOM요소에 연결
+    });
+    
+  </script>
+  
+  <!--별도 작성한 js 문서 호출 -->
+  <script src="ex1js.js" defer></script>
+</head>
+<body>
+  jQuery 출력 결과 : <span id="msg"></span>
+  <hr/>
+  vue는 MVVM(Model,View,ViewModel)로 이어지는 sw 아키텍쳐 패턴을 사용<br/>
+  vue 출력 결과(view(mvvm)) : <span id="app1">{{msg}}</span> <!--{{}} : 보간법-->
+  <hr/>
+  vue 출력 결과 2 : 
+  <div id="app2">
+    <span>
+      {{message1}} &nbsp;&nbsp;
+      {{message2}} &nbsp;&nbsp;
+      {{message3}} &nbsp;&nbsp;
+    </span>
+    <br/>
+    <button @click="updateMessage">메세지 변경</button>
+  </div>
+</body>
+</html>
